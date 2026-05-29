@@ -16,8 +16,6 @@ const URLS = {
   terrace_off:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165681/terrace_off", 
 
   // --- Сад та Двір ---
-  light_on:     "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165673/svitlo_on",
-  light_off:    "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/svitlo_off",
   flood_on:     "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165697/osvitlennya_sadove_on",
   flood_off:    "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165699/osvitlennya_sadove_off",
   garden_on:    "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165701/projector_on",
@@ -38,29 +36,27 @@ const URLS = {
 
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-// Головне меню з кнопками (Згруповано за категоріями)
+// Нове згруповане меню з кнопками (Змінено порядок категорій)
 const mainMenuOptions = {
   reply_markup: {
     keyboard: [
-      // Категорія 1: БАСЕЙН ТА ТЕРАСА
-      ["🌊 Басейн Насос: УВІМК", "❌ Басейн Насос: ВИМК"],
-      ["🚿 Насос тераса: УВІМК", "❌ Насос тераса: ВИМК"],
+      // Категорія 1: ГАРАЖ (ТЕПЕР ЗВЕРХУ)
+      ["🚗 Старий гараж: УВІМК", "🚗 Старий гараж: ВИМК"],
+      ["🔥 Опалення гараж: УВІМК", "❄️ Опалення гараж: ВИМК"],
       
       // Категорія 2: САД ТА ДВІР
-      ["💡 Світло dvor: УВІМК", "📴 Світло dvor: ВИМК"],
-      ["☀️ Ліхтарі садові: УВІМК", "🌑 Ліхтарі садові: ВИМК"],
-      ["🏡 Садове освітл: УВІМК", "🏡 Садове освітл: ВИМК"],
       ["🛰️ Прожектор: УВІМК", "🛰️ Прожектор: ВИМК"],
+      ["🏡 Садове освітл: УВІМК", "🏡 Садове освітл: ВИМК"],
       
       // Категорія 3: ІЛЮМІНАЦІЯ
       ["✨ Гірлянда Навіс: УВІМК", "✨ Гірлянда Навіс: ВИМК"],
       ["🏮 Гірлянда Балкон: УВІМК", "🏮 Гірлянда Балкон: ВИМК"],
       
-      // Категорія 4: ГАРАЖ
-      ["🚗 Старий гараж: УВІМК", "🚗 Старий гараж: ВИМК"],
-      ["🔥 Опалення гараж: УВІМК", "❄️ Опалення гараж: ВИМК"],
+      // Категорія 4: БАСЕЙН ТА ТЕРАСА (ТЕПЕР У САМОМУ НИЗУ)
+      ["🌊 Басейн Насос: УВІМК", "❌ Басейн Насос: ВИМК"],
+      ["🚿 Насос тераса: УВІМК", "❌ Насос тераса: ВИМК"],
       
-      // СЕРВІСНА
+      // СЕРВІСНА КНОПКА
       ["📊 Оновити меню"]
     ],
     resize_keyboard: true
@@ -73,7 +69,7 @@ bot.on('message', async (msg) => {
   const text = msg.text;
   const chatId = msg.chat.id;
 
-  // Безпека: дозволяємо доступ тільки твоєму ID та ID твоєї групи
+  // Безпека
   if (!ALLOWED_CHATS.includes(chatId.toString())) {
     bot.sendMessage(chatId, "🔒 Доступ обмежено! Цей бот керує приватним розумним домом.");
     return;
@@ -103,22 +99,6 @@ bot.on('message', async (msg) => {
   }
 
   // --- ОБРОБКА КНОПОК САДУ ТА ДВОРУ ---
-  else if (text === "💡 Світло dvor: УВІМК") {
-    await axios.get(URLS.light_on).catch(() => {});
-    bot.sendMessage(chatId, "✅ Загальне світло у дворі увімкнено!");
-  } 
-  else if (text === "📴 Світло dvor: ВИМК") {
-    await axios.get(URLS.light_off).catch(() => {});
-    bot.sendMessage(chatId, "✅ Загальне світло у дворі вимкнено!");
-  }
-  else if (text === "☀️ Ліхтарі садові: УВІМК") {
-    await axios.get(URLS.garden_on).catch(() => {});
-    bot.sendMessage(chatId, "✅ Садові ліхтарі увімкнено!");
-  } 
-  else if (text === "🌑 Ліхтарі садові: ВИМК") {
-    await axios.get(URLS.garden_off).catch(() => {});
-    bot.sendMessage(chatId, "✅ Садові ліхтарі вимкнено!");
-  }
   else if (text === "🏡 Садове освітл: УВІМК") {
     await axios.get(URLS.flood_on).catch(() => {});
     bot.sendMessage(chatId, "✅ Садове освітлення увімкнено!");
@@ -145,11 +125,11 @@ bot.on('message', async (msg) => {
     await axios.get(URLS.roof_g_off).catch(() => {});
     bot.sendMessage(chatId, "✅ Гірлянду під навісом вимкнено!");
   }
-  else if (text === "🏮 Гірлянда Балкон: УВІМК") {
+  else if (text === "🏮 Гірлянда Balkan: УВІМК" || text === "🏮 Гірлянда Балкон: УВІМК") {
     await axios.get(URLS.balcony_g_on).catch(() => {});
     bot.sendMessage(chatId, "✅ Гірлянду на балконі увімкнено!");
   } 
-  else if (text === "🏮 Гірлянда Балкон: ВИМК") {
+  else if (text === "🏮 Гірлянда Balkan: ВИМК" || text === "🏮 Гірлянда Балкон: ВИМК") {
     await axios.get(URLS.balcony_g_off).catch(() => {});
     bot.sendMessage(chatId, "✅ Гірлянду на балконі вимкнено!");
   }
