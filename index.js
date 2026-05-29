@@ -10,8 +10,8 @@ const URLS = {
   // --- Басейн та Тераса ---
   pump_on:      "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165679/pump_on",
   pump_off:     "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165681/pump_off",
-  terrace_on:   "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165681/terrace_on",   // <-- Зміни посилання
-  terrace_off:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165681/terrace_off",  // <-- Зміни посилання
+  terrace_on:   "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165681/terrace_on", 
+  terrace_off:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165681/terrace_off", 
 
   // --- Сад та Двір ---
   light_on:     "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165673/svitlo_on",
@@ -30,8 +30,8 @@ const URLS = {
   // --- Гараж ---
   garage_l_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165693/kotel_garage_on",
   garage_l_off: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165695/kotel_garage_off", 
-  garage_h_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/garage_h_on",  // <-- Зміни посилання
-  garage_h_off: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/garage_h_off"  // <-- Зміни посилання
+  garage_h_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/garage_h_on",  
+  garage_h_off: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/garage_h_off"  
 };
 
 const bot = new TelegramBot(TOKEN, { polling: true });
