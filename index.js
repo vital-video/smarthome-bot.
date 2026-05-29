@@ -3,7 +3,9 @@ const axios = require('axios');
 
 // --- НАЛАШТУВАННЯ ---
 const TOKEN = "8190301055:AAG4hDJRWDMydDVXLMc5EJgr1clJlgBVDdw";
-const CHAT_ID = "793126242"; 
+
+// Список дозволених чатів (твій особистий ID + ID вашої спільної групи)
+const ALLOWED_CHATS = ["793126242", "-5188562127"]; 
 
 // Вебхуки SEQUEmatic
 const URLS = {
@@ -30,8 +32,8 @@ const URLS = {
   // --- Гараж ---
   garage_l_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165693/kotel_garage_on",
   garage_l_off: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165695/kotel_garage_off", 
-  garage_h_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/garage_h_on",  
-  garage_h_off: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165676/garage_h_off"  
+  garage_h_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165705/garage_h_on",  
+  garage_h_off: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165707/garage_h_off"  
 };
 
 const bot = new TelegramBot(TOKEN, { polling: true });
@@ -45,7 +47,7 @@ const mainMenuOptions = {
       ["🚿 Насос тераса: УВІМК", "❌ Насос тераса: ВИМК"],
       
       // Категорія 2: САД ТА ДВІР
-      ["💡 Світло двір: УВІМК", "📴 Світло двір: ВИМК"],
+      ["💡 Світло dvor: УВІМК", "📴 Світло dvor: ВИМК"],
       ["☀️ Ліхтарі садові: УВІМК", "🌑 Ліхтарі садові: ВИМК"],
       ["🏡 Садове освітл: УВІМК", "🏡 Садове освітл: ВИМК"],
       ["🛰️ Прожектор: УВІМК", "🛰️ Прожектор: ВИМК"],
@@ -71,13 +73,14 @@ bot.on('message', async (msg) => {
   const text = msg.text;
   const chatId = msg.chat.id;
 
-  // Безпека
-  if (chatId.toString() !== CHAT_ID.toString()) {
-    bot.sendMessage(chatId, "🔒 Доступ обмежено!");
+  // Безпека: дозволяємо доступ тільки твоєму ID та ID твоєї групи
+  if (!ALLOWED_CHATS.includes(chatId.toString())) {
+    bot.sendMessage(chatId, "🔒 Доступ обмежено! Цей бот керує приватним розумним домом.");
     return;
   }
 
-  if (text === '/start' || text === '📊 Оновити меню') {
+  // Реакція на команду /start або оновлення меню
+  if (text === '/start' || text === '📊 Оновити меню' || text === '/start@' + (await bot.getMe()).username) {
     bot.sendMessage(chatId, "🏠 Меню керування розумним домом:", mainMenuOptions);
   } 
   
@@ -100,11 +103,11 @@ bot.on('message', async (msg) => {
   }
 
   // --- ОБРОБКА КНОПОК САДУ ТА ДВОРУ ---
-  else if (text === "💡 Світло двір: УВІМК") {
+  else if (text === "💡 Світло dvor: УВІМК") {
     await axios.get(URLS.light_on).catch(() => {});
     bot.sendMessage(chatId, "✅ Загальне світло у дворі увімкнено!");
   } 
-  else if (text === "📴 Світло двір: ВИМК") {
+  else if (text === "📴 Світло dvor: ВИМК") {
     await axios.get(URLS.light_off).catch(() => {});
     bot.sendMessage(chatId, "✅ Загальне світло у дворі вимкнено!");
   }
@@ -125,11 +128,11 @@ bot.on('message', async (msg) => {
     bot.sendMessage(chatId, "✅ Садове освітлення вимкнено!");
   }
   else if (text === "🛰️ Прожектор: УВІМК") {
-    await axios.get(URLS.flood_on).catch(() => {});
+    await axios.get(URLS.garden_on).catch(() => {});
     bot.sendMessage(chatId, "✅ Потужний прожектор увімкнено!");
   } 
   else if (text === "🛰️ Прожектор: ВИМК") {
-    await axios.get(URLS.flood_off).catch(() => {});
+    await axios.get(URLS.garden_off).catch(() => {});
     bot.sendMessage(chatId, "✅ Прожектор вимкнено!");
   }
 
