@@ -5,7 +5,7 @@ const axios = require('axios');
 const TOKEN = "8190301055:AAG4hDJRWDMydDVXLMc5EJgr1clJlgBVDdw";
 const CHAT_ID = "793126242"; 
 
-// Вебхуки SEQUEmatic (Заміни ТВОЯ_ПОДІЯ на реальні назви, коли створиш їх у SEQUEmatic)
+// Вебхуки SEQUEmatic
 const URLS = {
   // --- Басейн та Тераса ---
   pump_on:      "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165679/pump_on",
@@ -19,13 +19,13 @@ const URLS = {
   flood_on:     "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165697/osvitlennya_sadove_on",
   flood_off:    "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165699/osvitlennya_sadove_off",
   garden_on:    "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165701/projector_on",
-  garden_off:   "https://https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165703/projector_off",
+  garden_off:   "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165703/projector_off",
 
   // --- Гірлянди (Ілюмінація) ---
   roof_g_on:    "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165689/navis_avto_on",    
   roof_g_off:   "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165691/navis_avto_off",   
-  balcony_g_on: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165685", svitlo_balkon_on,
-  balcony_g_off:"https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165687/svitlo_balkon_off,
+  balcony_g_on: "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165685/svitlo_balkon_on", 
+  balcony_g_off:"https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165687/svitlo_balkon_off",
 
   // --- Гараж ---
   garage_l_on:  "https://sequematic.com/trigger-custom-webhook/9ECFC1747A/165693/kotel_garage_on",
@@ -142,11 +142,11 @@ bot.on('message', async (msg) => {
     await axios.get(URLS.roof_g_off).catch(() => {});
     bot.sendMessage(chatId, "✅ Гірлянду під навісом вимкнено!");
   }
-  else if (text === "🏮 Гірлянда Balkan: УВІМК" || text === "🏮 Гірлянда Балкон: УВІМК") {
+  else if (text === "🏮 Гірлянда Балкон: УВІМК") {
     await axios.get(URLS.balcony_g_on).catch(() => {});
     bot.sendMessage(chatId, "✅ Гірлянду на балконі увімкнено!");
   } 
-  else if (text === "🏮 Гірлянда Balkan: ВИМК" || text === "🏮 Гірлянда Балкон: ВИМК") {
+  else if (text === "🏮 Гірлянда Балкон: ВИМК") {
     await axios.get(URLS.balcony_g_off).catch(() => {});
     bot.sendMessage(chatId, "✅ Гірлянду на балконі вимкнено!");
   }
